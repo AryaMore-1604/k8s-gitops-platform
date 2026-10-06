@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Helm packaged charts
+*.tgz
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
