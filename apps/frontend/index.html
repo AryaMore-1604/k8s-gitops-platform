@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Platform | Service Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        header {
+            background: #0f172a;
+            color: white;
+            padding: 24px 8%;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+        }
+
+        header p {
+            margin: 0;
+            color: #cbd5e1;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .summary {
+            margin-bottom: 24px;
+        }
+
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px #0f172a0d;
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .description {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: 0;
+            border-radius: 7px;
+            padding: 10px 14px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .result {
+            margin-top: 14px;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            font-size: 13px;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            padding: 24px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cloud Platform Dashboard</h1>
+        <p>Kubernetes Microservices | Capstone Project</p>
+    </header>
+
+    <main>
+        <section class="summary">
+            <h2>Platform Overview</h2>
+            <p>Explore the microservices running on our cloud-native platform.</p>
+        </section>
+
+        <section class="services">
+            <article class="card">
+                <h2>Frontend</h2>
+                <span class="status">Available</span>
+                <p class="description">
+                    Web dashboard served by Nginx.
+                </p>
+            </article>
+
+            <article class="card">
+                <h2>Product Service</h2>
+                <span class="status">API</span>
+                <p class="description">
+                    Retrieves product information from the product API.
+                </p>
+                <button onclick="checkAPI('/products', 'products-result')">
+                    View Products
+                </button>
+                <div id="products-result" class="result">Click to load products.</div>
+            </article>
+
+            <article class="card">
+                <h2>Order Service</h2>
+                <span class="status">API</span>
+                <p class="description">
+                    Retrieves order information from the order API.
+                </p>
+                <button onclick="checkAPI('/orders', 'orders-result')">
+                    View Orders
+                </button>
+                <div id="orders-result" class="result">Click to load orders.</div>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        Built with Nginx, Docker and Kubernetes
+    </footer>
+
+    <script>
+        async function checkAPI(path, resultId) {
+            const result = document.getElementById(resultId);
+            result.textContent = 'Loading...';
+
+            try {
+                const response = await fetch(path);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                result.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                result.textContent =
+                    'API unavailable. Service routing will be configured in Kubernetes.\n'
+                    + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
+
