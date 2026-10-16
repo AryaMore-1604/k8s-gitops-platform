@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "order-service.fullname" . }}
+  labels:
+    release: monitoring
+    app.kubernetes.io/name: {{ include "order-service.name" . }}
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "order-service.name" . }}
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
